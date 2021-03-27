@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Craig`s List Lite</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Material+Icons|Tomorrow|Noto+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Coda|Codystar|Jacques+Francois+Shadow|Unica+One&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="module" defer src="app.js"></script>
+  </head>
+  <body>
+    <header>
+      <h2 class="site-name">CRAIG`S LIST LITE</h2>
+    </header>
+    <main>
+      <section class="post-holder" id="all-posts">
+        <!-- <h3 class="posts-header">POSTS</h3> -->
+        <div class="post-container"></div>
+      <div class="search-bar">
+        <label for="post-search" id="search-label">KEYWORD:</label>
+        <input type="search" id="post-search" name="PS" />
+        <button>SEARCH</button>
+      </div></section>
+    </main>
+    <div class="modal">
+      <div class="content">
+        <h3>New User</h3>
+        <form class="register-user" id="register-user" action="" method="">
+          <label for="user-name">NAME</label>
+          <input type="text" id="user-name" required />
+          <h5>This is a required field</h5>
+          <label for="user-password">PASSWORD</label>
+          <input type="password" id="user-password" required />
+          <h5>This is a required field</h5>
+          <label for="user-password-confirm">CONFIRM PASSWORD</label>
+        <input type="password" id="user-password-confirm" message =""required />
+        <span id='message'></span>
+        <h5>This is a required field</h5>
+          <div class="actions">
+            <button type="submit" class="action create-user when-valid" disabled = "true">
+              <i class="material-icons">add_circle</i>
+              <span type="submit" class="action-text" id ="createUser">Create</span>
+            </button>
+            <!-- <button disabled class="action create-user when-invalid">
+              <i class="material-icons">add_circle</i>
+              <span class="action-text">Create</span>
+            </button> -->
+            <button class="action cancel-create-user">
+              <i class="material-icons">cancel</i>
+              <span class="action-text">Cancel</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="modalLogin">
+    <div class="contentLogin">
+      <h3>User</h3>
+      <form class="login-user" id="login-user" action="" method="">
+        <label for="login-name">NAME</label>
+        <input type="text" id="login-name" required />
+        <h5>This is a required field</h5>
+        <label for="login-password">PASSWORD</label>
+        <input type="password" id="login-password" required />
+        <h5>This is a required field</h5>
+        <div class="actions">
+          <button type="submit" class="action login-user when-valid">
+            <i class="material-icons">add_circle</i>
+            <span type="submit" class="action-text">Log in</span>
+          </button>
+          <!-- <button disabled class="action create-user when-invalid">
+            <i class="material-icons">add_circle</i>
+            <span class="action-text">Create</span>
+          </button> -->
+          <button class="action cancel-login">
+            <i class="material-icons">cancel</i>
+            <span class="action-text">Exit</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+    <aside class="make-post" id="aside-section" >
+      <h3 class="make-post-head">LIST AN ITEM FOR SALE</h3>
+        <form class ="post-form"action="" method="">
+          <label for="post-title">Title:</label>
+          <input type="text" id="post-title" name="title" />
+          <label for="post-body">Description:</label>
+          <textarea type="text" id="post-body" name="post"></textarea>
+          <label for="post-price">Price:</label>
+          <input type="text" id="post-price" name="price" />
+          <label for="post-location">Location:</label>
+          <input type="text" id="post-location" name="location" />
+          <label for="willDeliver">Will deliver<input type="checkbox" id="willDeliver" name="willDeliver" value=""></label>
+          
+          <input id="submit-post" type="submit" value="Submit" />
+        </form>
+      </aside>
+    <footer>
+      <div class="user-status">
+        <button class="login visible">LOG IN</button>
+        <button class="logout">LOG OUT</button>
+        <button class="register">REGISTER</button>
+      </div>
+    </footer>
+  </body>
+</html>
