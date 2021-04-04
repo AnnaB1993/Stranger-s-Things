@@ -6,43 +6,52 @@
 }
 body {
   display: grid;
-  grid-template-columns: 70% 30%;
-  grid-template-rows: 50px 600px 50px;
-  height: 100%;
+  grid-template-columns: 25% 50% 25%;
+  grid-template-rows: 60px 40px minmax(600px, auto);
+  height: 100vh;
+  position: relative;
 }
-/* main{
-  width: 100%;
-  height: 100%;
-} */
+.two-third-width{
+  display: grid;
+  grid-column: 1/3;
+}
 header {
+  position:fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   grid-column: 1/ -1;
   grid-row: 1;
   background-color: rgb(185, 185, 250);
 }
-footer {
-  grid-column: 1/-1;
-  grid-row: 3;
-  background-color: rgb(185, 185, 250);
-}
 .user-status {
+  position:fixed;
+  top: 55px;
+  left: 0;
+  right: 0;
   text-align: center;
+  background-color: pink;
+  grid-column: 1/ -1;
+  grid-row: 2;
 }
 .user-status button {
   border: solid blue 2px;
   height: 30px;
   width: 100px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin: 5px 10px 5px;
 }
 .logout:not(.in) {
   display: none;
 }
-.logout .in {
+.in {
   border: solid blue 2px;
   height: 30px;
-  width: 100px;
+  width: 120px;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+.myMessages:not(.in) {
+display: none;
 }
 .site-name {
   text-align: center;
@@ -50,12 +59,15 @@ footer {
   margin-bottom: 10px;
   padding: 0;
   color: rgb(78, 75, 75);
+  font-size: 30px;
 }
 .search-bar {
   position: fixed;
-  bottom: 60px;
-  left: 10px;
+  /* bottom: 60px;
+  left: 10px; */
   width: 500px;
+  top: 60px;
+  left: 30px;
 }
 #post-search {
   border: solid black 1px;
@@ -80,13 +92,14 @@ footer {
 
 .post-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
   height: 100%;
   width: 100%;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
 }
-
-/* .post-header {
+/* .header {
   display: none;
 } */
 .posts-header {
@@ -97,22 +110,34 @@ footer {
   height: 30px;
   padding-top: 5px;
 }
+.full-width {
+  grid-column: 1/4;
+}
+main{
+  display: grid;
+  grid-column: 2/3;
+}
 .post-form {
+  position: fixed;
+  top: 100px;
+  right: 30px;
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
+  margin-top: 10px;
 }
-.make-post-head{
-  display: inline-block;
+.make-post-head {
+  display: grid;
+  grid-column: 3/4;
   text-align: center;
   background-color: rgb(231, 21, 32);
   height: 30px;
   font-size: 25px;
   color: rgb(242, 248, 248);
+  margin-top: 2px;
 }
 #post-body {
   height: 200px;
-  width: 400px;
+  width: 350px;
   margin: 0px 0px 10px 25px;
   border: 1px solid rgb(170, 166, 166);
   border-radius: 7px;
@@ -120,7 +145,7 @@ footer {
 #post-title,
 #post-price,
 #post-location {
-  width: 400px;
+  width: 350px;
   height: 25px;
   border: 1px solid rgb(170, 166, 166);
   margin: 0px 0px 10px 25px;
@@ -138,6 +163,7 @@ label {
   color: indigo;
   font-size: 20px;
   font-weight: 700;
+  margin-top: 10px;
 }
 #submit-post {
   height: 30px;
@@ -154,12 +180,11 @@ label {
 }
 
 .modal.open {
-  position: absolute;
+  position: fixed;
   top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
-  bottom: 0;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -171,7 +196,7 @@ label {
   width: 400px;
   padding: 12px;
   min-height: 200px;
-  background: white;
+  background: rgb(245, 111, 111);
   box-shadow: 0 2px 12px -8px black;
 }
 
@@ -196,7 +221,7 @@ label {
 
 .modal input,
 .modal textarea {
-  background: #ddd;
+  background: rgb(255, 251, 251);
   padding: 8px;
   font-size: 22px;
 }
@@ -246,7 +271,7 @@ label {
 }
 
 .modalLogin.open {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -263,7 +288,7 @@ label {
   width: 400px;
   padding: 12px;
   min-height: 200px;
-  background: white;
+  background: rgb(186, 222, 243);
   box-shadow: 0 2px 12px -8px black;
 }
 
@@ -288,7 +313,7 @@ label {
 
 .modalLogin input,
 .modalLogin textarea {
-  background: #ddd;
+  background: rgb(250, 248, 248);
   padding: 8px;
   font-size: 22px;
 }
@@ -339,10 +364,103 @@ label {
 .visible {
   display: inline-block;
 }
+.invisible {
+  display: none;
+}
 aside {
   display: none;
 }
 .pop-up {
+  display: grid;
+  grid-column: 2/3;
+}
+.post-tab {
+  display: inline-flexbox;
+  border: 1px solid grey;
+  min-height: 400px;
+  width: 350px;
+  margin: 15px 5px 5px;
+}
+.post-tab p {
+  margin: 10px 5px 0px 5px;
+  font-size: 18px;
+}
+.post-tab h2 {
+  margin: 5px;
+  color: rgb(29, 19, 122);
+  text-align: center;
+}
+
+.post-holder {
+  margin-top: 100px;
+}
+.edit-post {
+  height: 40px;
+  width: 80px;
+  background-color: rgb(145, 74, 216);
+  color: yellow;
+  margin-left: 10px;
+  margin-top: 50px;
+  font-weight: 700;
+}
+.delete-post {
+  height: 40px;
+  width: 80px;
+  background-color: rgb(165, 33, 88);
+  color: rgb(236, 195, 11);
+  margin-left: 10px;
+  margin-top: 50px;
+  font-weight: 700;
+}
+.send-message {
+  height: 40px;
+  width: 80px;
+  background-color: rgb(3, 50, 112);
+  color: yellow;
+  margin-left: 10px;
+  margin-top: 50px;
+  font-weight: 700;
+}
+
+.messageForm{
   display: flex;
-  flex-direction: column;
+}
+
+
+#messageBody {
+  float: left;
+  border: 1px solid rgb(50, 61, 61);
+  height: 80px;
+  width: 250px;
+  margin: 5px;
+
+}
+.messageButton {
+  margin-top: 55px;
+  background-color: lavender;
+  font-weight: 600;
+  color: purple;
+  height: 30px;
+  width: 60px;
+}
+.messagesHeader{
+  background-color: yellow;
+  height: 40px;
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+}
+.message-container:not(.messageUp){
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+.messageUp{
+  grid-column: 1/2;
+  position: fixed;
+  top: 100px;
+}
+.postMiddle{
+  display: grid;
+  grid-column: 2/3;
 }

@@ -21,15 +21,24 @@
     <header>
       <h2 class="site-name">CRAIG`S LIST LITE</h2>
     </header>
-    <main>
+    <div class="user-status">
+      <button class="login visible">LOG IN</button>
+      <button class="logout">LOG OUT</button>
+      <button class="register">REGISTER</button>
+      <button class="myMessages">MESSAGES</button>
+    </div>
+    <section class="message-container"><div class="messages-holder"><h3 class="messagesHeader">Inbox messages</h3>
+    </div>
+  </section>
+    <main class="full-width">
       <section class="post-holder" id="all-posts">
-        <!-- <h3 class="posts-header">POSTS</h3> -->
         <div class="post-container"></div>
       <div class="search-bar">
+        <form action="" id="search-bar">
         <label for="post-search" id="search-label">KEYWORD:</label>
         <input type="search" id="post-search" name="PS" />
-        <button>SEARCH</button>
-      </div></section>
+        <button type="submit" id="search-button">SEARCH</button>
+      </div></form></section>
     </main>
     <div class="modal">
       <div class="content">
@@ -50,10 +59,6 @@
               <i class="material-icons">add_circle</i>
               <span type="submit" class="action-text" id ="createUser">Create</span>
             </button>
-            <!-- <button disabled class="action create-user when-invalid">
-              <i class="material-icons">add_circle</i>
-              <span class="action-text">Create</span>
-            </button> -->
             <button class="action cancel-create-user">
               <i class="material-icons">cancel</i>
               <span class="action-text">Cancel</span>
@@ -78,10 +83,6 @@
             <i class="material-icons">add_circle</i>
             <span type="submit" class="action-text">Log in</span>
           </button>
-          <!-- <button disabled class="action create-user when-invalid">
-            <i class="material-icons">add_circle</i>
-            <span class="action-text">Create</span>
-          </button> -->
           <button class="action cancel-login">
             <i class="material-icons">cancel</i>
             <span class="action-text">Exit</span>
@@ -92,27 +93,19 @@
   </div>
 </div>
     <aside class="make-post" id="aside-section" >
-      <h3 class="make-post-head">LIST AN ITEM FOR SALE</h3>
-        <form class ="post-form"action="" method="">
+        <form class ="post-form"action="" method=""><h3 class="make-post-head">LIST AN ITEM FOR SALE</h3>
           <label for="post-title">Title:</label>
-          <input type="text" id="post-title" name="title" />
+          <input type="text" id="post-title" name="title" required/>
           <label for="post-body">Description:</label>
-          <textarea type="text" id="post-body" name="post"></textarea>
+          <textarea type="text" id="post-body" name="post" required></textarea>
           <label for="post-price">Price:</label>
-          <input type="text" id="post-price" name="price" />
+          <input type="text" id="post-price" name="price" required/>
           <label for="post-location">Location:</label>
           <input type="text" id="post-location" name="location" />
           <label for="willDeliver">Will deliver<input type="checkbox" id="willDeliver" name="willDeliver" value=""></label>
           
-          <input id="submit-post" type="submit" value="Submit" />
+          <input id="submit-post" type="submit" value="post/edit" />
         </form>
       </aside>
-    <footer>
-      <div class="user-status">
-        <button class="login visible">LOG IN</button>
-        <button class="logout">LOG OUT</button>
-        <button class="register">REGISTER</button>
-      </div>
-    </footer>
   </body>
 </html>
