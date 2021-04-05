@@ -11,7 +11,12 @@ import {
   messageUser,
 } from "./auth.js";
 
-import { createElementPost, updateScreen } from "./create.js";
+import {
+  createElementPost,
+  updateScreen,
+  renderMessages,
+  renderMessagesForPost,
+} from "./create.js";
 
 const state = {
   token: isLoggedIn() ? localStorage.getItem("userToken") : "",
@@ -26,7 +31,7 @@ const searchField = $("#post-search");
 if (state.token) {
   getUser(state.token)
     .then((user) => {
-      state.user = user;
+      state.user = user.username;
     })
     .then(loginUI);
 }
@@ -59,6 +64,7 @@ function logoutHandler() {
   $(".myMessages").removeClass("in");
   deleteToken();
   state.token = "";
+  updateScreen(state.posts);
 }
 
 function storeToken(token) {
@@ -77,13 +83,23 @@ function isLoggedIn() {
   }
 }
 function messagesOpen() {
-  if ($("main").hasClass("two-third-width")) {
-    $("main").removeClass("two-third-width").addClass("postMiddle");
-    $(".message-container").addClass("messageUp");
-  } else if ($("main").hasClass("postMiddle")) {
-    $("main").removeClass("postMiddle").addClass("two-third-width");
-    $(".message-container").removeClass("messageUp");
-  }
+  $(".post-container").hide();
+  $(".myMessages").removeClass("in");
+  $(".myPosts").addClass("in");
+
+  // if ($("main").hasClass("two-third-width")) {
+  //   $("main").removeClass("two-third-width").addClass("postMiddle");
+  //   $(".message-container").addClass("messageUp");
+  // } else if ($("main").hasClass("postMiddle")) {
+  //   $("main").removeClass("postMiddle").addClass("two-third-width");
+  //   $(".message-container").removeClass("messageUp");
+  // }
+}
+
+function postsOpen() {
+  $(".post-container").show();
+  $(".myMessages").addClass("in");
+  $(".myPosts").removeClass("in");
 }
 
 //CLICKS
@@ -92,6 +108,7 @@ $(".register").click(registerUserHandler);
 $(".login").click(loginHandler);
 $(".logout").click(logoutHandler);
 $(".myMessages").click(messagesOpen);
+$(".myPosts").click(postsOpen);
 
 $(".action.cancel-create-user").click(function () {
   $("#register-user").trigger("reset");
@@ -118,7 +135,7 @@ $("#login-user").on("submit", async function (event) {
     state.token = token;
 
     const user = await getUser(token);
-    state.user = user;
+    state.user = user.username;
     console.log(state.user);
 
     const posts = await getPosts(token);
@@ -140,12 +157,15 @@ $("#register-user").on("submit", async function (event) {
   };
 
   console.log(userObj);
+  try {
+    const token = await createNewUser(userObj);
+    storeToken(token);
+    console.log(token);
 
-  const token = await createNewUser(userObj);
-  storeToken(token);
-  console.log(token);
-
-  $(".modal").removeClass("open");
+    $(".modal").removeClass("open");
+  } catch (error) {
+    $(".modal").append($(`<h3>${error.message}</h3>`));
+  }
 });
 
 $("#user-password-confirm, #user-password, #user-name").on(
@@ -154,7 +174,7 @@ $("#user-password-confirm, #user-password, #user-name").on(
     let password1 = $("#user-password").val();
     let password2 = $("#user-password-confirm").val();
     let username = $("#user-name").val();
-    console.log(password1, password2, username);
+
     if (
       password1 !== "" &&
       password2 !== "" &&
@@ -194,7 +214,11 @@ $(".post-form").on("submit", async function (event) {
       updateScreen(state.posts);
 
       $(".post-form").trigger("reset");
-    } catch (error) {}
+    } catch (error) {
+      $(".post-form").append(
+        $(".modalLogin").append($(`<p>${error.message}</p>`))
+      );
+    }
     //editing
   } else {
     try {
@@ -208,6 +232,9 @@ $(".post-form").on("submit", async function (event) {
       $(".post-form").trigger("reset");
     } catch (error) {
       console.log(error);
+      $(".post-form").append(
+        $(".modalLogin").append($(`<p>${error.message}</p>`))
+      );
     }
   }
 });
@@ -229,29 +256,26 @@ $(".post-container").on("click", ".send-message", async function (event) {
   event.preventDefault();
   const postEl = $(this).closest(".post-tab");
   const post = postEl.data("post");
-  const inputMessage = $("<form id='messageForm' class='messageFormHidden'><textarea type='text' id='messageBody'/><button type='submit' class='messageButton'>SEND</button></form>");
+  const inputMessage = $(
+    "<form id='messageForm' class='messageFormHidden'><textarea type='text' id='messageBody'/><button type='submit' class='messageButton'>SEND</button></form>"
+  );
   postEl.append(inputMessage);
-
-  //how to hide the form if clicked again?
-  //how to combine 2 clicks under the same function? the one right under
-  //multiple event listeners on the same element?
-
-
-})
-
+  postEl.find(".send-message").hide();
+});
 
 $(".post-container").on("click", ".messageButton", async function (event) {
   event.preventDefault();
   const postEl = $(this).closest(".post-tab");
   const post = postEl.data("post");
   const message = {
-    content: $("#messageBody").val(),
+    content: postEl.find("#messageBody").val(),
   };
-  console.log(message);
+  
   try {
     const result = await messageUser(post._id, message);
-    console.log(result);
-    $("#messageForm").trigger("reset");
+    
+    postEl.find("#messageForm").trigger("reset").remove();
+    postEl.find(".send-message").show();
   } catch (error) {
     console.log(error);
   }
@@ -267,6 +291,29 @@ $(".post-container").on("click", ".edit-post", async function () {
   $("#post-price").val(post.price);
   $("#post-location").val(post.location);
   $("#post-willDeliver").val(post.willDeliver);
+});
+
+$(".post-container").on("click", ".view-messages", async function () {
+  const newDivMessage = $("<div class='this-post-messages'></div>");
+  const postEl = $(this).closest(".post-tab");
+
+  const post = postEl.data("post");
+
+  postEl.append(newDivMessage);
+  postEl.find(".view-messages").hide();
+
+  try {
+    const userData = await getUser(localStorage.getItem("userToken"));
+
+    state.user = userData.username;
+    state.messages = userData.messages.filter(
+      (message) => message.post._id === post._id
+    );
+
+    renderMessagesForPost(state.messages);
+  } catch (e) {
+    console.error(e);
+  }
 });
 
 searchForm.on("submit", (event) => {
@@ -301,6 +348,24 @@ searchForm.on("submit", (event) => {
   searchForm.trigger("reset");
 });
 
+$(".myMessages").click(async function () {
+  const newDiv = $("<div class='message-holder'></div>");
+  $("main").append(newDiv);
+
+  try {
+    const user = await getUser(localStorage.getItem("userToken"));
+
+    state.user = user.username;
+    state.messages = user.messages.filter(
+      (message) => message.fromUser.username !== state.user
+    );
+
+    renderMessages(state.messages);
+  } catch (e) {
+    console.error(e);
+  }
+});
+
 function loadApp() {
   getPosts(state.token)
     .then((posts) => {
@@ -311,4 +376,3 @@ function loadApp() {
 }
 
 loadApp();
-

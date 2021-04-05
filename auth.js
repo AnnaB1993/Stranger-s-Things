@@ -10,7 +10,7 @@ export async function createNewUser(userObj) {
         body: JSON.stringify({ user: userObj }),
       }
     );
-    console.log(response);
+    
     const parsedJson = await response.json();
     console.log(parsedJson);
     return parsedJson.data.token;
@@ -31,7 +31,7 @@ export async function loginUser(userObj) {
         body: JSON.stringify({ user: userObj }),
       }
     );
-    console.log(response);
+    
     const parsedJson = await response.json();
     console.log(parsedJson);
     if (parsedJson.error) {
@@ -53,10 +53,10 @@ export async function getUser(token) {
         },
       }
     );
-    console.log(response);
+    
     const parsedJson = await response.json();
-    console.log(parsedJson.data.username);
-    return parsedJson.data.username;
+    console.log(parsedJson.data);
+    return parsedJson.data;
   } catch (error) {
     console.error;
   }
